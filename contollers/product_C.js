@@ -2,7 +2,18 @@ import Product from '../models/product.js'; // Product මොඩලය ආයා
 
 
 // සියලුම නිෂ්පාදන ලබාගන්න
-
+export const getProducts = (_, res) => {
+    Product.find()
+        .then((products) => {
+            res.json({ List: products }); // නිෂ්පාදන ලැයිස්තුව සමඟ ප්‍රතිචාරය කරන්න
+        })
+        .catch((error) => {
+            res.status(500).json({
+                message: "නිෂ්පාදන ලබා ගැනීමේ දෝෂයක්",
+                error, // ප්‍රතිචාරය තුළ දෝෂ විස්තර ඇතුළත් කරන්න
+            });
+        });
+};
 
 
 

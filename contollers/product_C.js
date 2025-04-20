@@ -92,7 +92,7 @@ export function deleteProductByname(req, res) {
             });
         })
         .catch(() => {
-            res.json({ message: "නිෂ්පාදනය මකා දැමීම අසාර්ථක විය" });
+            res.json({ message: "නිෂ්පාදනය මකා දැමීම අසාර්ථක විය" })
         });
 }
 

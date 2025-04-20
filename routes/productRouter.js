@@ -1,5 +1,5 @@
 import express from 'express';
-import { getProducts,  createProudct, getProductByName, deleteProductByname } from '../contollers/product_C.js'; // productController එක import කරනවා.
+import { getProducts,   getProductByName, deleteProductByname } from '../contollers/product_C.js'; // productController එක import කරනවා.
 
 // Create a new router instance using express.Router()
 const productRouter = express.Router();
@@ -8,7 +8,7 @@ const productRouter = express.Router();
 // Define routes for the productRouter
 productRouter.get('/', getProducts);
 
-productRouter.post('/', createProudct); // POST request to create a new product.
+productRouter.post('/',); // POST request to create a new product.
 
 //productRouter.delete('/', deleteProduct); 
 

@@ -1,7 +1,9 @@
 import express from "express"; // Express ගේනවා. මේකෙන් වෙබ් server එක හදන්න පුළුවන්.
 import bodyParser from "body-parser"; // Body Parser ගේනවා. එන දත්ත ලේසියෙන් ගන්න උදව් වෙනවා.
 import mongoose from "mongoose"; // Mongoose ගේනවා. MongoDB එක්ක ලේසියෙන් වැඩ කරන්න උදව් වෙනවා.
+import dotenv from "dotenv"; // Dotenv ගේනවා. එන දත්ත ලේසියෙන් ගන්න උදව් වෙනවා.
 
+dotenv.config(); // dotenv එක්ක ලේසියෙන් වැඩ කරන්න උදව් වෙනවා.
 
 import productRouter from "./routes/productRouter.js"; // Product Router එක import කරගන්නවා. මේකෙන් API එකේ routes එකක් හදන්න පුළුවන්.
 
@@ -11,8 +13,7 @@ import {} from "./function.js"; // function.js එක import කරගන්න�
 import userRouter from "./routes/userRouter.js";
 const app = express(); // Express එකෙන් app එකක් හදනවා. මේක තමයි server එක.
 app.use(bodyParser.json());
-const mongoUrl =
-  "mongodb+srv://admin:123@cluster0.t1maali.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const mongoUrl = process.env.MONGO_DB_URI;
 // MongoDB එක්ක සම්බන්ධ වෙන්න URL එක. database එකට යන්න ලිපිනය ලියලා තියෙනවා.
 
 mongoose.connect(mongoUrl, {}); // MongoDB එක්ක සම්බන්ධ වෙන්න Mongoose එක භාවිතා කරනවා.
@@ -23,8 +24,6 @@ connection.once("open", () => {
   // Database එක connect උනාම එක පාරක් වැඩ කරනවා.
   console.log("Database Connected"); // "Database Connected" කියලා පෙන්නනවා.
 });
-
-
 
 app.use((req, res, next) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -45,9 +44,6 @@ app.use((req, res, next) => {
   }
 });
 
-
-
-
 app.use("/api/products", productRouter); // "/products" කියන ලිපිනයට productRouter එක යවනවා.
 
 app.use("/api/users", userRouter);
@@ -56,4 +52,3 @@ app.listen(5000, () => {
   // Server එක 3000 port එකේ ලෑස්ති කරලා ගමන් යනවා.
   console.log("server is running on port 5000"); // "server එක 3000 එකේ යනවා" කියලා පෙන්නනවා.
 });
-  

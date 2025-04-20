@@ -30,7 +30,7 @@ app.use((req, res, next) => {
   console.log("Token:", token); // Token print කරන්න
 
   if (token != null) {
-    jwt.verify(token, "i love you", (error, decoded) => {
+    jwt.verify(token, process.env.SECRET , (error, decoded) => { // added secret key 
       if (!error) {
         console.log("Decoded Token:", decoded); // token decoded කරන්න
         req.user = decoded;

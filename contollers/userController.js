@@ -2,6 +2,9 @@ import User from '../models/user.js';
 import bcrypt from 'bcrypt'; // bcrypt ආනයනය කරනවා මුරපද හැෂ් කිරීම සඳහා.
 import {strlen} from "../function.js"; // ලිපි දිග පරීක්ෂා කිරීම සඳහා අභිරුචි ෆන්ක්ෂන් එකක් ආනයනය කරනවා.
 import jwt from 'jsonwebtoken'; // JWT ආනයනය කරනවා පරිශීලකයාගේ තොරතුරු සුරක්ෂිත කිරීම සඳහා.
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // දත්ත සමුදායෙන් පරිශීලකයා ලබා ගැනීම find() භාවිතයෙන්
 export function getuser(req, res) {
@@ -63,7 +66,7 @@ export function loginUser(req, res) {
                     isBlocked: user.isBlocked,
                     type: user.type,
                     profilepicture: user.profilepicture
-                }, "i love you");
+                }, process.env.SECRET);
 
                 // සාර්ථක ලොගින් පණිවිඩයක් එක්ක ටෝකනය යවනවා
                 res.json({

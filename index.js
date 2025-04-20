@@ -5,7 +5,7 @@ import dotenv from "dotenv"; // Dotenv ගේනවා. එන දත්ත ල�
 
 dotenv.config(); // dotenv එක්ක ලේසියෙන් වැඩ කරන්න උදව් වෙනවා.
 
-import productRouter from "./routes/productRouter.js"; // Product Router එක import කරගන්නවා. මේකෙන් API එකේ routes එකක් හදන්න පුළුවන්.
+
 
 import jwt from "jsonwebtoken";
 import {} from "./function.js"; // function.js එක import කරගන්නවා. මේකෙන් function එකක් import කරගන්න පුළුවන්.
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
   }
 });
 
-app.use("/api/products", productRouter); // "/products" කියන ලිපිනයට productRouter එක යවනවා.
+
 
 app.use("/api/users", userRouter);
 

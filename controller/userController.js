@@ -1,6 +1,6 @@
 import User from '../models/user.js';
 import bcrypt from 'bcrypt'; // bcrypt ආනයනය කරනවා මුරපද හැෂ් කිරීම සඳහා.
-import {strlen} from "../function.js"; // ලිපි දිග පරීක්ෂා කිරීම සඳහා අභිරුචි ෆන්ක්ෂන් එකක් ආනයනය කරනවා.
+
 import jwt from 'jsonwebtoken'; // JWT ආනයනය කරනවා පරිශීලකයාගේ තොරතුරු සුරක්ෂිත කිරීම සඳහා.
 import dotenv from 'dotenv';
 
@@ -19,11 +19,36 @@ export function getuser(req, res) {
     });
 }
 
+// පරිශීලක නිර්මාණය කිරීමේ ක්‍රියාවලිය හසුරුවන ෆන්ක්ෂන් එක
 export function createUser(req, res) {
-
+    // ඉල්ලීමේ බොඩියෙන් නව පරිශීලක ඩේටා ලබා ගැනීම
     const newUserData = req.body;
 
-    newUserData.password = bcrypt.hashSync(newUserData.password, 10); // මුරපදය bcrypt භාවිතයෙන් හැෂ් කරනවා.
+    // නව පරිශීලකයා "admin" වර්ගයේ එකක් දැයි පරීක්ෂා කිරීම
+    if (newUserData.type == "admin") {
+        // සත්‍යාපිත පරිශීලකයෙකු නොමැති බව (req.user null වීම) පරීක්ෂා කිරීම
+        if (req.user == null) {
+            // පරිපාලක ලෙස ලොගින් වීම අවශ්‍ය බව දන්වන JSON පිළිතුර යැවීම
+            res.json({
+                message: "please login as administor to create admin account"
+            });
+            // තවදුරටත් ක්‍රියාවලිය නවත්වා ෆන්ක්ෂන් එකෙන් ඉවත් වීම
+            return;
+        }
+
+        // සත්‍යාපිත පරිශීලකයා පරිපාලකයෙකු නොවන බව පරීක්ෂා කිරීම
+        if (req.user.type != "admin") {
+            // පරිපාලක ගිණුම් නිර්මාණයට පරිපාලක ලොගින් අවශ්‍ය බව දන්වන JSON පිළිතුර යැවීම
+            res.json({
+                message: "please login as administor to create admin account"
+            })
+            return;
+            
+        }
+    }
+
+
+newUserData.password = bcrypt.hashSync(newUserData.password, 10); // මුරපදය bcrypt භාවිතයෙන් හැෂ් කරනවා.
 
     const user = new User(newUserData); // ඉල්ලීමේ බොඩිය භාවිතයෙන් නව පරිශීලක වස්තුවක් සාදනවා.
     user.save().then(
@@ -38,6 +63,7 @@ export function createUser(req, res) {
         });
     });
 }
+
 
 
 
@@ -81,6 +107,49 @@ export function loginUser(req, res) {
 
 
 
+export function isAdmin(req, res) {
+    // පරිශීලකයා පරිපාලකයෙකුද යන්න පරීක්ෂා කරනවා
+    if (req.user.type == "admin") {
+        res.json({
+            message: "User is admin" // පරිපාලකයෙකු නම් පණිවිඩයක් JSON ආකාරයෙන් යවනවා
+        });
+    } else {
+        res.json({
+            message: "User is not admin" // පරිපාලකයෙකු නොනම් පණිවිඩයක් JSON ආකාරයෙන් යවනවා
+        });
+    }
+}
+
+export function isCustomer(req, res) {
+    // පරිශීලකයා ගනුදෙනුකරුද යන්න පරීක්ෂා කරනවා
+    if (req.user.type == "customer") {
+        res.json({
+            message: "User is customer" // ගනුදෙනුකරු නම් පණිවිඩයක් JSON ආකාරයෙන් යවනවා
+        });
+    } else {
+        res.json({
+            message: "User is not customer" // ගනුදෙනුකරු නොනම් පණිවිඩයක් JSON ආකාරයෙන් යවනවා
+        });
+    }
+}
 
 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ //admin@admin @ admin --admin
+ // himashguruge@gmail.com @ 123 -- customer

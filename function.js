@@ -1,3 +1,43 @@
+
+/*
+
+
+import {
+    isset,
+    isEmpty,
+    isNotEmpty,
+    isString,
+    isNumber,
+    isBoolean,
+    isObject,
+    isArray,
+    isFunction,
+    isDate,
+    trim,
+    strlen
+  } from './function.js';
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Variable එකක් set වෙලා තියෙනවද සහ null නොවෙනවද බලනවා. Multiple arguments check කරන්නත් පුළුවන්.
 export function isset(...args) {
     return args.every(arg => typeof arg !== 'undefined' && arg !== null);
@@ -62,3 +102,10 @@ export function trim(str, characters = '') {
 export function strlen(input) {
     return String(input).length;
 }
+
+
+
+
+
+
+

@@ -1,7 +1,7 @@
 
 
 import express from "express"; // Import express from "express" module.
-import { createUser, loginUser , getuser} from "../contollers/userController.js"; // Import createUser function from userController.js.
+import { createUser, loginUser , getuser} from "../controller/userController.js"; // Import createUser function from userController.js.
 
 const userRouter = express.Router(); // Create a new router object using express.Router().
 

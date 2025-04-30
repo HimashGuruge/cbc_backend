@@ -1,6 +1,7 @@
 import User from '../models/user.js';
 import bcrypt from 'bcrypt'; // bcrypt ආනයනය කරනවා මුරපද හැෂ් කිරීම සඳහා.
 
+
 import jwt from 'jsonwebtoken'; // JWT ආනයනය කරනවා පරිශීලකයාගේ තොරතුරු සුරක්ෂිත කිරීම සඳහා.
 import dotenv from 'dotenv';
 
@@ -106,39 +107,37 @@ export function loginUser(req, res) {
 
 
 
-
 export function isAdmin(req, res) {
     // පරිශීලකයා පරිපාලකයෙකුද යන්න පරීක්ෂා කරනවා
-    if (req.user.type == "admin") {
-        res.json({
-            message: "User is admin" // පරිපාලකයෙකු නම් පණිවිඩයක් JSON ආකාරයෙන් යවනවා
-        });
-    } else {
-        res.json({
-            message: "User is not admin" // පරිපාලකයෙකු නොනම් පණිවිඩයක් JSON ආකාරයෙන් යවනවා
-        });
+    if (req.user==null) {
+        return false;
+
+
+ 
     }
+
+    if(req.user.type != "admin") {
+        return false;
+    }
+
+    return true;
 }
+
 
 export function isCustomer(req, res) {
-    // පරිශීලකයා ගනුදෙනුකරුද යන්න පරීක්ෂා කරනවා
-    if (req.user.type == "customer") {
-        res.json({
-            message: "User is customer" // ගනුදෙනුකරු නම් පණිවිඩයක් JSON ආකාරයෙන් යවනවා
-        });
-    } else {
-        res.json({
-            message: "User is not customer" // ගනුදෙනුකරු නොනම් පණිවිඩයක් JSON ආකාරයෙන් යවනවා
-        });
+    // පරිශීලකයා පාරිභෝගිකයෙකුද යන්න පරීක්ෂා කරනවා
+    if (req.user==null) {
+        return false;
     }
+
+    if(req.user.type != "customer") {
+        return false;
+    }
+
+    return true;
+
+
 }
-
-
-
-
-
-
-
 
 
 
@@ -152,4 +151,13 @@ export function isCustomer(req, res) {
 
 
  //admin@admin @ admin --admin
+
  // himashguruge@gmail.com @ 123 -- customer
+
+ /*
+ {
+
+    "email": "himashguruge@gmail.com",
+    "password": "123"
+}
+ */

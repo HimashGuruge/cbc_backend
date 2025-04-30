@@ -1,54 +1,52 @@
-import express from "express"; // Express ගේනවා. මේකෙන් වෙබ් server එක හදන්න පුළුවන්.
-import bodyParser from "body-parser"; // Body Parser ගේනවා. එන දත්ත ලේසියෙන් ගන්න උදව් වෙනවා.
-import mongoose from "mongoose"; // Mongoose ගේනවා. MongoDB එක්ක ලේසියෙන් වැඩ කරන්න උදව් වෙනවා.
-import dotenv from "dotenv"; // Dotenv ගේනවා. එන දත්ත ලේසියෙන් ගන්න උදව් වෙනවා.
+import express from "express"; // Express ගේනවා, වෙබ් server හදන්න
+import bodyParser from "body-parser"; // Body Parser ගේනවා, එන දත්ත ගන්න
+import mongoose from "mongoose"; // Mongoose ගේනවා, MongoDB එක්ක වැඩ කරන්න
+import dotenv from "dotenv"; // Dotenv ගේනවා, environment variables ගන්න
+import jwt from "jsonwebtoken"; // JWT ගේනවා, ටෝකන් verify කරන්න
 
-dotenv.config(); // dotenv එක්ක ලේසියෙන් වැඩ කරන්න උදව් වෙනවා.
+import userRouter from "./routes/userRouter.js"; // User routes ගේනවා
+import productRouter from "./routes/productRouter.js"; // Product routes ගේනවා
+import orderRouter from "./routes/orderRouter.js";
 
+dotenv.config(); // Environment variables ලෝඩ් කරනවා
 
+const app = express(); // Express app හදනවා
+app.use(bodyParser.json()); // JSON දත්ත ගන්න bodyParser යොදනවා
 
-import jwt from "jsonwebtoken";
-import {} from "./function.js"; // function.js එක import කරගන්නවා. මේකෙන් function එකක් import කරගන්න පුළුවන්.
+const mongoUrl = process.env.MONGO_DB_URI; // MongoDB URL එක ගන්නවා
 
-import userRouter from "./routes/userRouter.js";
-const app = express(); // Express එකෙන් app එකක් හදනවා. මේක තමයි server එක.
-app.use(bodyParser.json());
-const mongoUrl = process.env.MONGO_DB_URI;
-// MongoDB එක්ක සම්බන්ධ වෙන්න URL එක. database එකට යන්න ලිපිනය ලියලා තියෙනවා.
+mongoose.connect(mongoUrl, {}); // MongoDB එක්ක connect වෙනවා
 
-mongoose.connect(mongoUrl, {}); // MongoDB එක්ක සම්බන්ධ වෙන්න Mongoose එක භාවිතා කරනවා.
-
-const connection = mongoose.connection; // Mongoose එකේ connection එක ගබඩා කරනවා.
+const connection = mongoose.connection; // DB connection එක ගබඩා කරනවා
 
 connection.once("open", () => {
-  // Database එක connect උනාම එක පාරක් වැඩ කරනවා.
-  console.log("Database Connected"); // "Database Connected" කියලා පෙන්නනවා.
+  console.log("Database Connected"); // DB connect උනාම print කරනවා
 });
 
 app.use((req, res, next) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
-  console.log("Token:", token); // Token print කරන්න
+  const token = req.header("Authorization")?.replace("Bearer ", ""); // ටෝකන් ගන්නවා
+  console.log("Token:", token);
 
-  if (token != null) {
-    jwt.verify(token, process.env.SECRET , (error, decoded) => { // added secret key 
+  if (token) {
+    jwt.verify(token, process.env.SECRET, (error, decoded) => {
       if (!error) {
-        console.log("Decoded Token:", decoded); // token decoded කරන්න
-        req.user = decoded;
+        console.log("Decoded Token:", decoded); // ටෝකන් decode කරනවා
+        req.user = decoded; // User තොරතුරු request එකට දානවා
       } else {
-        console.log("Token verify error:", error.message); // Error print කරන්න
+        console.log("Token verify error:", error.message); // එරර් print කරනවා
       }
-      next(); // next() function එක call වෙන එක ensure කරන්න
+      next(); // ඊළඟ middleware එකට යනවා
     });
   } else {
-    next(); // token null නම් next() call කරන්න
+    next(); // ටෝකන් නැත්නම් ඊළඟට යනවා
   }
 });
 
+app.use("/api/users", userRouter); // User routes යොදනවා
+app.use("/api/products", productRouter); // Product routes යොදනවා
+app.use("/api/orders", orderRouter); // Order routes යොදනවා
 
-
-app.use("/api/users", userRouter);
 
 app.listen(5000, () => {
-  // Server එක 3000 port එකේ ලෑස්ති කරලා ගමන් යනවා.
-  console.log("server is running on port 5000"); // "server එක 3000 එකේ යනවා" කියලා පෙන්නනවා.
+  console.log("server is running on port 5000"); // Server 5000 port එකේ යනවා
 });

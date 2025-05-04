@@ -15,6 +15,8 @@ const orderSchema = new mongoose.Schema({
 
     ordereditems: [
         {
+
+
             name: {
                 type: String,
                 required: true,
@@ -35,6 +37,8 @@ const orderSchema = new mongoose.Schema({
                 type: String,
                 required: true,
             },
+
+
 
         }
     ],

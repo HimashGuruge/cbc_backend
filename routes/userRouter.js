@@ -7,7 +7,7 @@ const userRouter = express.Router(); // Create a new router object using express
 
 userRouter.post("/", createUser); // Define a POST request route to create a new user.
 
-userRouter.post("/login", loginUser); // Define a POST request route to log in a user.
+userRouter.post("/login?", loginUser); // Define a POST request route to log in a user.
 
 userRouter.get("/", getuser); // Define a GET request route to get user information.
 

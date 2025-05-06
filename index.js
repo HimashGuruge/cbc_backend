@@ -4,6 +4,8 @@ import mongoose from "mongoose"; // Mongoose ගේනවා, MongoDB එක්�
 import dotenv from "dotenv"; // Dotenv ගේනවා, environment variables ගන්න
 import jwt from "jsonwebtoken"; // JWT ගේනවා, ටෝකන් verify කරන්න
 
+import cors from "cors"; // CORS ගේනවා, cross-origin requests වලට
+
 import userRouter from "./routes/userRouter.js"; // User routes ගේනවා
 import productRouter from "./routes/productRouter.js"; // Product routes ගේනවා
 import orderRouter from "./routes/orderRouter.js";
@@ -11,6 +13,9 @@ import orderRouter from "./routes/orderRouter.js";
 dotenv.config(); // Environment variables ලෝඩ් කරනවා
 
 const app = express(); // Express app හදනවා
+
+app.use(cors()); // CORS middleware එක යොදනවා
+
 app.use(bodyParser.json()); // JSON දත්ත ගන්න bodyParser යොදනවා
 
 const mongoUrl = process.env.MONGO_DB_URI; // MongoDB URL එක ගන්නවා
